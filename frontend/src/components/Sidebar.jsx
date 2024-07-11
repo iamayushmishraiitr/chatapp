@@ -30,7 +30,7 @@ const Sidebar = () => {
               users.map((user, index) => (
                 <div
                   key={index}
-                  className={`flex flex-row items-center ${user._id === id ? 'bg-blue-600' : ''} hover:bg-blue-200 text-white mb-3 h-[40px] w-full rounded-lg`}
+                  className={`flex flex-row items-center ${user._id === id ? 'bg-blue-600' : ''} hover:bg-blue-200 text-white mb-6 h-[40px] w-full rounded-lg`}
                   onClick={() => navigate(`/${user._id}`)}
                 >
                 <div className="relative">

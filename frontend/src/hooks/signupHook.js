@@ -17,7 +17,7 @@ const signupHook = () => {
   const navigate= useNavigate() ;
   const signup = async (formData) => {
     const { email, username, password, confirmPassword } = formData;
-
+  console.log(formData)
     const isValid = errorHandler({ email, username, password, confirmPassword });
     if (!isValid) return;
 
@@ -30,9 +30,9 @@ const signupHook = () => {
       setLoad(true);
 
       const res = await publicRequest.post("/auth/signup", {
-        email,
-        username,
-        password,
+        email:email ,
+        username:username,
+        password :password  
       });
       
       toast.success("User registered successfully");

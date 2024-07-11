@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import signupHook from '../hooks/signupHook.js';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
   const { load, signup } = signupHook();
@@ -10,21 +11,33 @@ const Signup = () => {
     confirmPassword: '',
     email: '',
   });
-const navigate= useNavigate()  ;
+  const navigate = useNavigate();
+
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const trimmedInputs= {
-      ...inputs ,
-      username:username.trim() ,
-      email: email.trim() 
+    const { username, email, password, confirmPassword } = inputs;
+    if (password !== confirmPassword) {
+      console.error('Passwords do not match');
+      return;
     }
-    signup(trimmedInputs); 
 
+    const trimmedInputs = {
+      ...inputs,
+      username: username.trim(),
+      email: email.trim(),
+    };
+
+    try {
+      await signup(trimmedInputs);
+      navigate('/signin'); // Navigate to signin page after successful signup
+    } catch (error) {
+       toast.error("Error occured")
+    }
   };
 
   return (
-    <div className='flex h-screen w-200px flex-col items-center justify-center'>
-      <div className='w-100 mt-10 p-10 rounded-lg mr-20 mb-20 shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 '>
+    <div className='flex h-screen w-full flex-col items-center justify-center'>
+      <div className='w-100 mt-10 p-10 rounded-lg mr-20 mb-20 shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
         <h1 className='text-3xl font-semibold text-center text-gray-300'>
           <span className='text-gray-500'>Signup</span>
           <span className='text-blue-500'> ChatApp</span>
@@ -79,9 +92,12 @@ const navigate= useNavigate()  ;
             </label>
           </div>
           <p className='mt-4 text-white text-xl'>
-            Already have an account? <span className='text-blue-400 cursor-pointer' onClick={()=>navigate('/signin')}>Sign in</span>
+            Already have an account?{' '}
+            <span className='text-blue-400 cursor-pointer' onClick={() => navigate('/signin')}>
+              Sign in
+            </span>
           </p>
-          <button className='h-10 w-40 bg-blue-400 btn-block btn-sm mt-2 rounded-lg'>
+          <button type='submit' className='h-10 w-40 bg-blue-400 btn-sm mt-2 rounded-lg'>
             {load ? 'Signing up...' : 'Signup'}
           </button>
         </form>

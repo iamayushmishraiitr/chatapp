@@ -14,9 +14,10 @@ const useListenMessage = () => {
        const socket= io("http://localhost:3000" ,{
         query:{
           userId: userId
-        }
+        } ,
+        reconnectionDelayMax: 5000,
        })  ;
-          socket.on("getOnlineUsers"  , (users)=>{
+          socket?.on("getOnlineUsers"  , (users)=>{
             console.log("HERE ARE USERS <" ,users)
              dispatch(setOnlineUsers(users)) ;
           }) ;
