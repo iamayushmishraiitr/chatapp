@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 const  jwtMiddleware=(req,res,next)=>{
-    const SecretKey = process.env.SECRETKEY ;
+    const SecretKey = process.env.Secret ;
     const authHeader = req.headers['token'];
     const token = authHeader ;
     if(!token) res.status(401);

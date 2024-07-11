@@ -46,16 +46,15 @@ export const getmessage = async (req, res) => {
       return res.status(400).json({ error: "Missing receiverId or senderId" });
     }
 
-    console.log(req.query);
 
     const conversation = await Conversations.findOne({
       participants: { $all: [senderId, receiverId] },
     }).populate("messages");
-console.log("Below conversations ")
+
     if (!conversation) {
       return res.status(200).json({ message: [] });
     }
-    console.log("After conversations " ,conversation)
+    
     // Return messages from the conversation
     return res.status(200).json({ message: conversation.messages });
   } catch (error) {

@@ -3,12 +3,12 @@ import { publicRequest } from "../reqHandler";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import {  setmessage } from "../redux/messagesSlice";
-import { BsXLg } from "react-icons/bs";
 
 const useGetMessage = () => {
   const dispatch = useDispatch();
   const [load, setLoad] = useState(false);
   const senderId = useSelector((state) => state.user.currentUser?._id);
+  const token = useSelector((state)=>state?.token?.token) ;
   const getmessages = async ({ receiverId }) => {
     try {
       console.log(receiverId ,"   Here is receiver id")
@@ -17,6 +17,9 @@ const useGetMessage = () => {
         params: {
           receiverid: receiverId,  
            senderid: senderId
+        } ,
+        headers :{
+          token :token ,
         }
       });
       const { message } = res.data;
