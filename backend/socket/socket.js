@@ -6,9 +6,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://chatapp-two-beta.vercel.app/signin"],
-    methods: ["GET", "POST"],
-  },
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST"],  },
 });
 const usermap = {}; // Users connected To socket {userId: socket.id}
 export const getReceiverSocket= (receiverId)=>{

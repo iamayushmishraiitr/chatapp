@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { BsSend } from "react-icons/bs";
-import useSendmessage from "../../hooks/useSendmessage.js";
+import useSendMessage from "../../hooks/useSendmessage.js";
 import { useParams } from "react-router-dom";
 const Messageinput = () => {
     const [val,setVal]=useState("") ;
     const {id}= useParams() 
-    const {load,sendmessage}= useSendmessage()
+    const {load,sendmessage}= useSendMessage()
     const handlesubmit= async()=>{
        sendmessage({val,id})  ;
        setVal("") ;

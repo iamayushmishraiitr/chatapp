@@ -12,7 +12,6 @@ const useSendmessage = () => {
   const sendmessage = async (data) => {
     try {
       setLoad(true);
-
       const res = await publicRequest.post(
         `/messages/send/${data.id}`,
         {
@@ -24,8 +23,7 @@ const useSendmessage = () => {
             token: token,
           },
         }
-      );
-
+      ) 
       dispatch(addmessage(res.data));
     } catch (error) {
       console.log(error);
