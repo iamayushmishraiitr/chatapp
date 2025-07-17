@@ -1,7 +1,9 @@
+// pages/Signup.jsx
 import React, { useState } from 'react';
 import signupHook from '../hooks/signupHook.js';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import AuthCard from '../components/AuthCard';
 
 const Signup = () => {
   const { load, signup } = signupHook();
@@ -17,7 +19,7 @@ const Signup = () => {
     e.preventDefault();
     const { username, email, password, confirmPassword } = inputs;
     if (password !== confirmPassword) {
-      console.error('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
 
@@ -29,80 +31,51 @@ const Signup = () => {
 
     try {
       await signup(trimmedInputs);
-      navigate('/signin'); // Navigate to signin page after successful signup
+      navigate('/signin');
     } catch (error) {
-       toast.error("Error occured")
+      toast.error('Error occurred');
     }
   };
 
   return (
-    <div className='flex h-screen w-full flex-col items-center justify-center'>
-      <div className='w-100 mt-10 p-10 rounded-lg mr-20 mb-20 shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
-        <h1 className='text-3xl font-semibold text-center text-gray-300'>
-          <span className='text-gray-500'>Signup</span>
-          <span className='text-blue-500'> ChatApp</span>
-        </h1>
-        <form onSubmit={handlesubmit}>
-          <div className='mt-6'>
-            <label className='block'>
-              <span className='text-white'>Username</span>
-              <input
-                type='text'
-                placeholder='Enter Username Here'
-                className='w-full bg-slate-700 text-white rounded-lg input input-bordered h-10 p-2 mt-1'
-                value={inputs.username}
-                onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
-              />
-            </label>
+    <AuthCard title="Signup" subtitle="ChatApp">
+      <form onSubmit={handlesubmit} className="space-y-4">
+        {[
+          { name: 'username', type: 'text' },
+          { name: 'email', type: 'email' },
+          { name: 'password', type: 'password' },
+          { name: 'confirmPassword', type: 'password' },
+        ].map(({ name, type }) => (
+          <div key={name}>
+            <label className="flex justify-start ml-2 text-sm font-medium text-white capitalize">{name.replace(/([A-Z])/g, ' $1')}</label>
+            <input
+              type={type}
+              placeholder={`Enter ${name}`}
+              className="mt-1 block w-full bg-slate-700 text-white rounded-lg h-10 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={inputs[name]}
+              onChange={(e) => setInputs({ ...inputs, [name]: e.target.value })}
+            />
           </div>
-          <div className='mt-4'>
-            <label className='block'>
-              <span className='text-white'>Email</span>
-              <input
-                type='text'
-                placeholder='Enter Email Here'
-                className='w-full bg-slate-700 text-white rounded-lg input input-bordered h-10 p-2 mt-1'
-                value={inputs.email}
-                onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
-              />
-            </label>
-          </div>
-          <div className='mt-4'>
-            <label className='block'>
-              <span className='text-white'>Password</span>
-              <input
-                type='password'
-                placeholder='Enter Password Here'
-                className='w-full bg-slate-700 text-white rounded-lg input input-bordered h-10 p-2 mt-1'
-                value={inputs.password}
-                onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
-              />
-            </label>
-          </div>
-          <div className='mt-4'>
-            <label className='block'>
-              <span className='text-white'>Confirm Password</span>
-              <input
-                type='password'
-                placeholder='Confirm Password'
-                className='w-full bg-slate-700 text-white rounded-lg input input-bordered h-10 p-2 mt-1'
-                value={inputs.confirmPassword}
-                onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
-              />
-            </label>
-          </div>
-          <p className='mt-4 text-white text-xl'>
-            Already have an account?{' '}
-            <span className='text-blue-400 cursor-pointer' onClick={() => navigate('/signin')}>
-              Sign in
-            </span>
-          </p>
-          <button type='submit' className='h-10 w-40 bg-blue-400 btn-sm mt-2 rounded-lg'>
-            {load ? 'Signing up...' : 'Signup'}
-          </button>
-        </form>
-      </div>
-    </div>
+        ))}
+
+        <p className="text-sm text-white">
+          Already have an account?{' '}
+          <span
+            className="text-blue-400 cursor-pointer hover:underline"
+            onClick={() => navigate('/signin')}
+          >
+            Sign in
+          </span>
+        </p>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition"
+        >
+          {load ? 'Signing up...' : 'Signup'}
+        </button>
+      </form>
+    </AuthCard>
   );
 };
 
